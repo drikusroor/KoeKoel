@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 3592bfef679459347af273ed0fc7847d
+timeCreated: 1501425192
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Pixel Cowboy
+  fontNames:
+  - Pixel Cowboy
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
