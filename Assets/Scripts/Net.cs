@@ -6,8 +6,12 @@ public class Net : MonoBehaviour {
 
 	public Sprite netLeeg;
 	public Sprite netVol;
+    
+    public AudioClip success;
+    public AudioClip netSound;
 
-	private SpriteRenderer spriteRenderer;
+    AudioSource audioSource;
+    private ScoreManager scoreManager;
 
 
 	private bool isNetVol = false;
@@ -15,7 +19,8 @@ public class Net : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+        scoreManager = FindObjectOfType<ScoreManager>();
+        audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -26,12 +31,16 @@ public class Net : MonoBehaviour {
 	void HandleCow(Collider2D other) {
 		
 		if (other.gameObject.tag == "Cow" && !isNetVol) {
-
+            
 			Koe koe = other.gameObject.GetComponent<Koe> ();
 
-			if (!koe.IsDood ()) {
-				isNetVol = true;
-				whichCow = other.gameObject.name;
+            print(koe.isDood.ToString());
+
+            if (!koe.isDood) {
+                
+                audioSource.PlayOneShot(netSound);
+                isNetVol = true;
+                whichCow = other.gameObject.name;
 
 				this.GetComponent<SpriteRenderer>().sprite = netVol;	
 				Object.Destroy (other.gameObject);
@@ -42,12 +51,11 @@ public class Net : MonoBehaviour {
 
 	void HandleHouse(Collider2D other) {
 		if (other.gameObject.tag == "House" && isNetVol) {
-			isNetVol = false;
 
-			ScoreManager scoreManager = FindObjectOfType<ScoreManager> ();
+            audioSource.PlayOneShot(success);
 
-			print ("De naam van de koe is: " + whichCow);
-
+            isNetVol = false;
+            
 			if (whichCow.Contains( "KoeNing") ) {
 				scoreManager.AddScore (10);
 			} else if (whichCow.Contains( "KoeSpeziale") ) {
@@ -62,7 +70,6 @@ public class Net : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {
-		print (other.gameObject.name);
 		HandleHouse (other);
 		HandleCow (other);
 	}

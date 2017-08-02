@@ -54,3 +54,6 @@ TagManager:
   - name: player_cow
     uniqueID: 3665277495
     locked: 0
+  - name: foreground
+    uniqueID: 2543922037
+    locked: 0

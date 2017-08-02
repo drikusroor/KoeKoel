@@ -8,7 +8,7 @@ public class CowSpawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		InvokeRepeating ("SpawnCow", 4f, 4f);
+		InvokeRepeating ("SpawnCow", 2f, 4f);
 	}
 	
 	// Update is called once per frame

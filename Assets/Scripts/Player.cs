@@ -5,11 +5,16 @@ using UnityEngine;
 public class Player : MonoBehaviour {
 
 	public float moveSpeed;
-	private Vector3 horizontalMove;
-	private bool faceLeft = true;
+
+    private AudioSource audioSource;
+
+    private Vector3 horizontalMove;
+    private bool faceLeft = true;
+    private bool isMoving = false;
 
 	// Use this for initialization
 	void Start () {
+        audioSource = GetComponent<AudioSource>();
 		horizontalMove = new Vector3 (moveSpeed, 0f);
 	}
 
@@ -23,18 +28,26 @@ public class Player : MonoBehaviour {
 	void Update () {
 
 		if (Input.GetKey (KeyCode.LeftArrow)) {
-			if (!faceLeft) {
+            if (!audioSource.isPlaying) audioSource.Play();
+            if (!faceLeft) {
 				Flip ();
 				faceLeft = true;
 			}
 			transform.position -= horizontalMove;
 		} else if (Input.GetKey(KeyCode.RightArrow)) {
-			if (faceLeft) {
+            if (!audioSource.isPlaying) audioSource.Play();
+            if (faceLeft) {
 				Flip ();
 				faceLeft = false;
 			}
 			transform.position += horizontalMove;
-		}
+		} else
+        {
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+        }
 
 	}
 }
