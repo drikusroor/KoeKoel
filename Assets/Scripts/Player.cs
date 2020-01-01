@@ -12,8 +12,17 @@ public class Player : MonoBehaviour {
     private bool faceLeft = true;
     private bool isMoving = false;
 
-	// Use this for initialization
-	void Start () {
+    public float stamina;
+    public float staminaTotal = 100f;
+    public float staminaRegenRate;
+
+    private bool isRunning = false;
+    public float runningSpeedModifier;
+    public float runningCost;
+
+    // Use this for initialization
+    void Start () {
+        stamina = staminaTotal;
         audioSource = GetComponent<AudioSource>();
 		horizontalMove = new Vector3 (moveSpeed, 0f);
 	}
@@ -27,6 +36,13 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         Move();
+        if (stamina < 100f)
+        {
+            stamina += staminaRegenRate;
+        } else
+        {
+            stamina = 100f;
+        }
 	}
 
     void ResetMoveSpeed ()
@@ -41,6 +57,33 @@ public class Player : MonoBehaviour {
 
     void Move ()
     {
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (stamina > 0)
+            {
+
+                if (!isRunning)
+                {
+                    isRunning = true;
+                }
+
+                if (isMoving)
+                {
+                    stamina -= runningCost;
+                }
+
+            } else
+            {
+                isRunning = false;
+            }
+
+        } else
+        {
+            if (isRunning)
+            {
+                isRunning = false;
+            }
+        }
         
         if (Input.GetKey(KeyCode.LeftArrow))
         {
@@ -50,7 +93,8 @@ public class Player : MonoBehaviour {
                 Flip();
                 faceLeft = true;
             }
-            transform.position -= horizontalMove;
+            if (!isMoving) isMoving = true;
+            transform.position -= horizontalMove * (isRunning ? runningSpeedModifier : 1f);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
@@ -60,10 +104,12 @@ public class Player : MonoBehaviour {
                 Flip();
                 faceLeft = false;
             }
-            transform.position += horizontalMove;
+            if (!isMoving) isMoving = true;
+            transform.position += horizontalMove * (isRunning ? runningSpeedModifier : 1f);
         }
         else
         {
+            if (isMoving) isMoving = false;
             if (audioSource.isPlaying)
             {
                 audioSource.Stop();
