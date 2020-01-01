@@ -18,7 +18,7 @@ public class CowSpawner : MonoBehaviour {
 	}
 
 	void SpawnCow() {
-        SpawnInterval = SpawnInterval > 2f ? SpawnInterval * 0.98f : 2f;
+        SpawnInterval = SpawnInterval > 1.8f ? SpawnInterval * 0.98f : 2f;
 		int randomNumber = Random.Range (0, 10);
 		float deviance = Random.Range (-10f, 10f);
 
