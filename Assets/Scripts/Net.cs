@@ -34,8 +34,6 @@ public class Net : MonoBehaviour {
             
 			Koe koe = other.gameObject.GetComponent<Koe> ();
 
-            print(koe.isDood.ToString());
-
             if (!koe.isDood) {
                 
                 audioSource.PlayOneShot(netSound);
