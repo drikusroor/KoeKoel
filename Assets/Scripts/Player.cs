@@ -26,28 +26,48 @@ public class Player : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Move();
+	}
 
-		if (Input.GetKey (KeyCode.LeftArrow)) {
+    void ResetMoveSpeed ()
+    {
+        SetMoveSpeed();
+    }
+
+    public void SetMoveSpeed(float modifier = 1f)
+    {
+        horizontalMove = new Vector3(moveSpeed * modifier, 0f);
+    }
+
+    void Move ()
+    {
+        
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
             if (!audioSource.isPlaying) audioSource.Play();
-            if (!faceLeft) {
-				Flip ();
-				faceLeft = true;
-			}
-			transform.position -= horizontalMove;
-		} else if (Input.GetKey(KeyCode.RightArrow)) {
+            if (!faceLeft)
+            {
+                Flip();
+                faceLeft = true;
+            }
+            transform.position -= horizontalMove;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
             if (!audioSource.isPlaying) audioSource.Play();
-            if (faceLeft) {
-				Flip ();
-				faceLeft = false;
-			}
-			transform.position += horizontalMove;
-		} else
+            if (faceLeft)
+            {
+                Flip();
+                faceLeft = false;
+            }
+            transform.position += horizontalMove;
+        }
+        else
         {
             if (audioSource.isPlaying)
             {
                 audioSource.Stop();
             }
         }
-
-	}
+    }
 }

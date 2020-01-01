@@ -5,10 +5,11 @@ using UnityEngine;
 public class CowSpawner : MonoBehaviour {
 
 	public GameObject[] KoeTypes;
+    public float SpawnInterval = 4f;
 
 	// Use this for initialization
 	void Start () {
-		InvokeRepeating ("SpawnCow", 2f, 4f);
+		Invoke ("SpawnCow", SpawnInterval);
 	}
 	
 	// Update is called once per frame
@@ -17,6 +18,7 @@ public class CowSpawner : MonoBehaviour {
 	}
 
 	void SpawnCow() {
+        SpawnInterval = SpawnInterval > 2f ? SpawnInterval * 0.98f : 2f;
 		int randomNumber = Random.Range (0, 10);
 		float deviance = Random.Range (-10f, 10f);
 
@@ -30,5 +32,7 @@ public class CowSpawner : MonoBehaviour {
 			spawnedCow = GameObject.Instantiate (KoeTypes [0], transform) as GameObject;
 		}
 		spawnedCow.transform.position += new Vector3 (deviance, 0f);
-	}
+
+        Invoke("SpawnCow", SpawnInterval);
+    }
 }
