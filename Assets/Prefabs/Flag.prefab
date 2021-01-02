@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 58917195891770882}
   - component: {fileID: 82504844249822164}
   - component: {fileID: 95746791508997694}
+  - component: {fileID: 114029852751112400}
   m_Layer: 0
   m_Name: Flag
   m_TagString: Cow
@@ -192,6 +193,17 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114029852751112400
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1770789549498728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90b6acfaebc9a724bb804e60a81a9a03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212525273020924740
 SpriteRenderer:
   m_ObjectHideFlags: 1

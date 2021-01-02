@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,6 +10,9 @@ public class Player : MonoBehaviour {
     private AudioSource audioSource;
 
     private Vector3 horizontalMove;
+
+    public PlayerState state = PlayerState.None;
+
     private bool faceLeft = true;
     private bool isMoving = false;
 
@@ -19,6 +23,7 @@ public class Player : MonoBehaviour {
     private bool isRunning = false;
     public float runningSpeedModifier;
     public float runningCost;
+
 
     // Use this for initialization
     void Start () {
@@ -57,63 +62,89 @@ public class Player : MonoBehaviour {
 
     void Move ()
     {
+
+        Debug.Log(state);
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             if (stamina > 0)
             {
 
-                if (!isRunning)
+                if ((state & PlayerState.Running) == 0)
                 {
-                    isRunning = true;
+                    state |= PlayerState.Running;
                 }
 
-                if (isMoving)
+                if ((state & PlayerState.Moving) != 0)
                 {
                     stamina -= runningCost;
                 }
 
             } else
             {
-                isRunning = false;
+                state &= ~PlayerState.Running;
             }
 
         } else
         {
-            if (isRunning)
+            if (state.HasFlag(PlayerState.Running))
             {
-                isRunning = false;
+                state &= ~PlayerState.Running;
             }
         }
         
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             if (!audioSource.isPlaying) audioSource.Play();
-            if (!faceLeft)
+
+            if (state.HasFlag(PlayerState.FaceRight))
             {
                 Flip();
-                faceLeft = true;
+                state &= ~PlayerState.FaceRight;
             }
-            if (!isMoving) isMoving = true;
-            transform.position -= horizontalMove * (isRunning ? runningSpeedModifier : 1f);
+            
+            if (!state.HasFlag(PlayerState.Moving)) state |= PlayerState.Moving;
+
+            var speedModifier = state.HasFlag(PlayerState.Running) ? runningSpeedModifier : 1f;
+            var currentPos = transform.position.x;
+
+            transform.position -= new Vector3(horizontalMove.x * speedModifier, 0f);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
             if (!audioSource.isPlaying) audioSource.Play();
-            if (faceLeft)
+
+            if (!state.HasFlag(PlayerState.FaceRight))
             {
                 Flip();
-                faceLeft = false;
+                state |= PlayerState.FaceRight;
             }
-            if (!isMoving) isMoving = true;
-            transform.position += horizontalMove * (isRunning ? runningSpeedModifier : 1f);
+
+            if (!state.HasFlag(PlayerState.Moving)) state |= PlayerState.Moving;
+
+            var speedModifier = state.HasFlag(PlayerState.Running) ? runningSpeedModifier : 1f;
+            var currentPos = transform.position.x;
+
+            transform.position += new Vector3(horizontalMove.x * speedModifier, 0f);
         }
         else
         {
-            if (isMoving) isMoving = false;
+            if (state.HasFlag(PlayerState.Moving)) state &= ~PlayerState.Moving;
+
             if (audioSource.isPlaying)
             {
                 audioSource.Stop();
             }
         }
     }
+}
+
+[Flags]
+public enum PlayerState
+{
+    None = 0,
+    FaceRight = 1,
+    Moving = 2,
+    Running = 4,
+    CarriesFlag = 8
 }
